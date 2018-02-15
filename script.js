@@ -352,7 +352,7 @@ Array.from(all).forEach(cur => cur.style.color = 'grey');
 ////////////////////////////////////////////
 // Rest parameters
 
-
+/*
 // ES5
 function isFullAge5() {
     //console.log(arguments);
@@ -364,3 +364,232 @@ function isFullAge5() {
 }
 
 isFullAge5(1990, 1999, 1965, 2011);
+
+// ES6 
+function isFullAge6(...years) {
+    years.forEach(cur => console.log((2018 - cur) >= 18));
+}
+
+isFullAge6(1990, 1983, 2008, 2011);
+*/
+/*
+// ES5
+function isFullAge5(limit) {
+    //console.log(arguments);
+    var argsArr = Array.prototype.slice.call(arguments,1);
+    
+    argsArr.forEach(function(cur) {
+        console.log((2018 - cur) >= 18)
+    })
+}
+
+isFullAge5(21, 1990, 1999, 1965, 2011);
+
+// ES6 
+function isFullAge6(limit,...years) {
+    years.forEach(cur => console.log((2018 - cur) >= limit));
+}
+
+isFullAge6(16, 1990, 1983, 2008, 2011);
+
+*/
+
+
+
+
+
+
+
+///////////////////////////////////////////////////
+// Default parameters
+
+/*
+// ES5
+function SmithPerson(firstName, yearOfBirth, lastName, nationality) {
+    
+    lastName === undefined ? lastName = 'Smith' : lastName = lastName; 
+    nationality === undefined ? nationality = 'american' : nationality = nationality
+    
+    this.firstName = firstName; 
+    this.lastName = lastName; 
+    this.yearOfBirth = yearOfBirth; 
+    this.nationality = nationality;
+}
+*/
+/*
+// ES6 
+function SmithPerson(firstName, yearOfBirth, lastName = 'Smith', nationality = 'American') {
+    this.firstName = firstName; 
+    this.lastName = lastName; 
+    this.yearOfBirth = yearOfBirth; 
+    this.nationality = nationality;
+}
+
+var john = new SmithPerson('John', 1990);
+// the remaining arguments will be set to undefined
+
+var emily = new SmithPerson('Emily', 1983, 'Diaz', 'Spanish');
+
+*/
+
+
+
+
+
+
+
+
+
+/*
+
+/////////////////////////////////////////////////////////
+// Maps
+
+const question = new Map();
+question.set('question', 'What is the official name of the latest major JavaScript version?');
+question.set(1, 'ES5');
+question.set(2, 'ES6');
+question.set(3, 'ES2015');
+question.set(4, 'ES7');
+question.set('correct', 3);
+question.set(true, 'Correct answer! :D');
+question.set(false, 'Wrong, please try again');
+
+
+console.log(question.get('question'));
+console.log(question.size);
+
+question.delete(4);
+
+//question.clear(); <-- removes all elements 
+
+question.forEach((value, key) => console.log(`This is ${key}, and it's value is ${value}`));
+
+for (let [key,value] of question.entries()) {
+    
+    if (typeof(key) === 'number') {
+        console.log(`Answer ${key}: ${value}`);    
+    }
+}
+
+const ans = parseInt(prompt('Write the correct answer'));
+
+console.log(question.get(ans === question.get('correct')));
+
+
+*/
+
+
+
+/*
+///////////////////////////////////////////////////
+// Classes
+
+// ES5 
+var Person5 = function(name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+}
+
+Person5.prototype.calculateAge = function() {
+    var age = new Date().getFullYear - this.yearOfBirth;
+    console.log(age);
+}
+
+var john5 = new Person5('John', 1990, 'teacher');
+
+
+// ES6
+class Person6 {
+    constructor (name, yearOfBirth, job) {
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.job = job;
+    }
+    
+    calculateAge() {
+        var age = new Date().getFullYear - this.yearOfBirth;
+        console.log(age);
+    }
+    
+    static greeting() {
+        console.log('Hey there!');
+    }
+}
+
+const john6 = new Person6('John', 1990, 'teacher');
+
+Person6.greeting(); // <-- this is how to use static functions! they are not alliged to objects, but classes
+
+
+*/
+
+////////////////////////////////////////////////////////////
+// Subclasses 
+
+// ES5 
+var Person5 = function(name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+}
+
+Person5.prototype.calculateAge = function() {
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+}
+
+var Athlete5 = function(name, yearOfBirth, job, olympicGames, medals) {
+    Person5.call(this, name, yearOfBirth, job);
+    this.olympicGames = olympicGames;
+    this.medals = medals;
+}
+
+
+Athlete5.prototype = Object.create(Person5.prototype);
+
+Athlete5.prototype.wonMedal = function() {
+    this.medals++;
+    console.log(this.medals);
+}
+
+var johnAthlete5 = new Athlete5('John', 1989, 'swimmer', 3, 10);
+
+johnAthlete5.calculateAge();
+
+johnAthlete5.wonMedal();
+
+// ES6
+
+class Person6 {
+    constructor (name, yearOfBirth, job) {
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.job = job;
+    }
+    
+    calculateAge() {
+        var age = new Date().getFullYear() - this.yearOfBirth;
+        console.log(age);
+    }
+}
+
+class Athlete6 extends Person6 {
+    constructor(name, yearOfBirth, job, olympicGames, medals) {
+        super(name, yearOfBirth, job);
+        this.olympicGame = olympicGames;
+        this.medals = medals;
+        
+    }
+    
+    wonMedal() {
+        this.medals++;
+        console.log(this.medals);
+    }
+}
+
+const johnAthlete6 = new Athlete6('John', 1990, 'swimmer', 3, 10);
+
+johnAthlete6.wonMedal();
+johnAthlete6.calculateAge();
